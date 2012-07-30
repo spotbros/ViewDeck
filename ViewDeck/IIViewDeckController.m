@@ -87,6 +87,7 @@ __typeof__(h) __h = (h);                                    \
 #import <QuartzCore/QuartzCore.h>
 #import <objc/message.h>
 #import "WrapController.h"
+#import "ActivityTableView.h"
 
 #define DURATION_FAST 0.3
 #define DURATION_SLOW 0.3
@@ -1187,7 +1188,7 @@ __typeof__(h) __h = (h);                                    \
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-    if([[touch view] isKindOfClass:[UISlider class]])
+    if([[touch view] isKindOfClass:[UISlider class]] || [[touch view].superview.superview isKindOfClass:[ActivityTableView class]])
     {
         return NO;
     }
