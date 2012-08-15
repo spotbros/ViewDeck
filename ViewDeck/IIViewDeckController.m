@@ -153,6 +153,15 @@ __typeof__(h) __h = (h);                                    \
 - (void)relayAppearanceMethod:(void(^)(UIViewController* controller))relay;
 - (void)relayAppearanceMethod:(void(^)(UIViewController* controller))relay forced:(BOOL)forced;
 
+- (BOOL)closeLeftViewBouncing:(void(^)(IIViewDeckController* controller))bounced
+                 callDelegate:(BOOL)callDelegate
+                   completion:(void (^)(IIViewDeckController *))completed;
+- (BOOL)closeRightViewBouncing:(void(^)(IIViewDeckController* controller))bounced
+                  callDelegate:(BOOL)callDelegate
+                    completion:(void (^)(IIViewDeckController *))completed;
+
+- (CGFloat)locationOfPanner:(UIPanGestureRecognizer*)panner;
+
 @end 
 
 
