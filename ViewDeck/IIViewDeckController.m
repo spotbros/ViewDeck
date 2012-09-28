@@ -111,6 +111,7 @@ __typeof__(h) __h = (h);                                    \
 @property (nonatomic, retain) UIButton* centerTapper;
 @property (nonatomic, retain) UIView* centerView;
 @property (nonatomic, readonly) UIView* slidingControllerView;
+@property (nonatomic, assign) BOOL viewsApplied;
 
 - (void)cleanup;
 
@@ -216,6 +217,7 @@ __typeof__(h) __h = (h);                                    \
 @synthesize enabled = _enabled;
 @synthesize elastic = _elastic;
 @synthesize automaticallyUpdateTabBarItems = _automaticallyUpdateTabBarItems;
+@synthesize viewsApplied = _viewsApplied;
 
 #pragma mark - Initalisation and deallocation
 
@@ -254,6 +256,8 @@ __typeof__(h) __h = (h);                                    \
         self.rightController = nil;
         self.leftLedge = 44;
         self.rightLedge = 44;
+        
+        self.viewsApplied = NO;
     }
     return self;
 }
@@ -318,6 +322,8 @@ __typeof__(h) __h = (h);                                    \
     [self.centerController didReceiveMemoryWarning];
     [self.leftController didReceiveMemoryWarning];
     [self.rightController didReceiveMemoryWarning];
+    
+    self.viewsApplied = NO;
 }
 
 #pragma mark - Bookkeeping
@@ -545,29 +551,34 @@ __typeof__(h) __h = (h);                                    \
     BOOL wasntAppeared = !_viewAppeared;
     [self.view addObserver:self forKeyPath:@"bounds" options:NSKeyValueChangeSetting context:nil];
 
-    void(^applyViews)(void) = ^{        
-        [self.centerController.view removeFromSuperview];
-        [self.centerView addSubview:self.centerController.view];
-        [self.leftController.view removeFromSuperview];
-        [self.referenceView insertSubview:self.leftController.view belowSubview:self.slidingControllerView];
-        [self.rightController.view removeFromSuperview];
-        [self.referenceView insertSubview:self.rightController.view belowSubview:self.slidingControllerView];
-        
-        [self reapplySideController:&_leftController];
-        [self reapplySideController:&_rightController];
-        
-        [self setSlidingFrameForOffset:_offset];
-        self.slidingControllerView.hidden = NO;
-        
-        self.centerView.frame = self.centerViewBounds;
-        self.centerController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        self.centerController.view.frame = self.centerView.bounds;
-        self.leftController.view.frame = self.sideViewBounds;
-        self.leftController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        self.rightController.view.frame = self.sideViewBounds;
-        self.rightController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        
-        [self applyShadowToSlidingView];
+    void(^applyViews)(void) = ^{
+        if (!self.viewsApplied)
+        {
+            [self.centerController.view removeFromSuperview];
+            [self.centerView addSubview:self.centerController.view];
+            [self.leftController.view removeFromSuperview];
+            [self.referenceView insertSubview:self.leftController.view belowSubview:self.slidingControllerView];
+            [self.rightController.view removeFromSuperview];
+            [self.referenceView insertSubview:self.rightController.view belowSubview:self.slidingControllerView];
+            
+            [self reapplySideController:&_leftController];
+            [self reapplySideController:&_rightController];
+            
+            [self setSlidingFrameForOffset:_offset];
+            self.slidingControllerView.hidden = NO;
+            
+            self.centerView.frame = self.centerViewBounds;
+            self.centerController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+            self.centerController.view.frame = self.centerView.bounds;
+            self.leftController.view.frame = self.sideViewBounds;
+            self.leftController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+            self.rightController.view.frame = self.sideViewBounds;
+            self.rightController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+            
+            [self applyShadowToSlidingView];
+            
+            self.viewsApplied = YES;
+        }
     };
 
     if ([self setSlidingAndReferenceViews]) 
