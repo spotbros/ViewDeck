@@ -88,6 +88,7 @@ __typeof__(h) __h = (h);                                    \
 #import <objc/message.h>
 #import "WrapController.h"
 #import "ActivityTableView.h"
+#import "DatabaseWrapper.h"
 
 #define DURATION_FAST 0.3
 #define DURATION_SLOW 0.3
@@ -636,6 +637,11 @@ __typeof__(h) __h = (h);                                    \
         should = [self.centerController shouldAutorotateToInterfaceOrientation:interfaceOrientation];
     
     return should;
+}
+
+- (BOOL)shouldAutorotate
+{
+    return [DatabaseWrapper isLandscapeModeEnabled];
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
