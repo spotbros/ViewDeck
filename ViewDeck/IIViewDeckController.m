@@ -661,6 +661,17 @@ __typeof__(h) __h = (h);                                    \
 
 - (BOOL)shouldAutorotate
 {
+    _preRotationWidth = self.referenceBounds.size.width;
+    _preRotationCenterWidth = self.centerView.bounds.size.width;
+    
+    if (self.rotationBehavior == IIViewDeckRotationKeepsViewSizes) {
+        _leftWidth = self.leftController.view.frame.size.width;
+        _rightWidth = self.rightController.view.frame.size.width;
+    }
+    
+    if (self.interfaceOrientation != UIInterfaceOrientationPortrait)
+        return YES;
+    
     return [DatabaseWrapper isLandscapeModeEnabled];
 }
 

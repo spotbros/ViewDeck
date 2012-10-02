@@ -99,6 +99,8 @@ typedef enum {
 - (void)setLeftLedge:(CGFloat)rightLedge completion:(void(^)(BOOL finished))completion;
 - (void)setRightLedge:(CGFloat)rightLedge completion:(void(^)(BOOL finished))completion;
 
+- (void)restoreShadowToSlidingView;
+
 - (BOOL)toggleLeftView;
 - (BOOL)openLeftView;
 - (BOOL)closeLeftView;
