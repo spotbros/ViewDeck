@@ -652,6 +652,11 @@ __typeof__(h) __h = (h);                                    \
         _rightWidth = self.rightController.view.frame.size.width;
     }
     
+    if (self.interfaceOrientation != UIInterfaceOrientationPortrait)
+    {
+        return YES;
+    }
+    
     BOOL should = YES;
     if (self.centerController)
         should = [self.centerController shouldAutorotateToInterfaceOrientation:interfaceOrientation];
